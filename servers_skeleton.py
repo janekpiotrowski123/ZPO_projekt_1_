@@ -33,8 +33,21 @@ class MapServer:
     pass
 
 
+
+
 class Client:
-    # FIXME: klasa powinna posiadać metodę inicjalizacyjną przyjmującą obiekt reprezentujący serwer
+     #FIXME: klasa powinna posiadać metodę inicjalizacyjną przyjmującą obiekt reprezentujący serwer
+
+    def __init__(self, server) -> None:
+        if not hasattr(server, "get_entries"):
+            raise ValueError("Dostarczony obiekt serwera nie posiada metody „get_entries”.")
+        self.server = server
 
     def get_total_price(self, n_letters: Optional[int]) -> Optional[float]:
-        raise NotImplementedError()
+        try:
+            entries = self.server.get_entries(n_letters) if n_letters is not None else self.server.get_entries()
+            if not entries:
+                return None
+            return sum(entry.price for entry in entries)
+        except TooManyProductsFoundError:
+            return None
