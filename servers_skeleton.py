@@ -14,7 +14,9 @@ class Product:
         self.price=cena
 
     def __eq__(self, other):
-        if not isinstance(other, Product):
+
+        if not isinstance(other,Product):
+
             return False
         if self.name == other.name and self.price== other.price :
             return True
